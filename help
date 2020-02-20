@@ -1,0 +1,28 @@
+
+//example
+
+testContract.deploy().estimateGas().then((gas) => {
+  testContract.deploy().send({from: alice, gas: gas}).then((clonedContract) => {
+    clonedContract.methods.transfer('0x000000000000000000000000000000000', 1000)
+      .send({from: alice, gas: gas})
+      .on('transactionHash', (hash) => {
+        console.log('TRANSACTION_HASH');
+        console.log(hash);
+      })
+      .on('confirmation', (confirmations, receipt) => {
+        console.log('CONFIRMATION');
+        console.log(confirmations);
+        console.log(receipt);
+      })
+      .on('receipt', (receipt) => {
+        console.log('RECEIPT');
+        console.log(receipt);
+      })
+      .on('error', (error, receipt, confirmations) => {
+        console.log('ERROR');
+        console.log(error);
+        console.log(receipt);
+        console.log(confirmations);
+      });
+  });
+});
